@@ -1,8 +1,6 @@
-import React, { Component, useState } from 'react'
-import { Platform, StyleSheet, AsyncStorage } from 'react-native'
-import { View, Text, Image, Dimensions } from 'react-native'
-import { Container, Content, Button } from 'native-base'
-import { Icon } from 'expo'
+import React, { Component } from 'react'
+import { StyleSheet, AsyncStorage, View, Text, Dimensions } from 'react-native'
+import { Container, Content, Thumbnail } from 'native-base'
 import Colors from '../constants/Colors'
 import LoginBlock from '../components/LoginBlock' 
 
@@ -19,28 +17,64 @@ class ProfileScreen extends Component {
     title: 'Novel',
   })
 
-  async componentDidMount() {
+  async componentWillMount() {
     let uid = await AsyncStorage.getItem('uid')
-    if(uid !== null) {
-      this.setState({ uid: uid })
+
+    if(uid) {
+      this.setState({ uid })
     }
     else {
       this.setState({ uid: null })
     }
   }
 
-  render () {
+  renderProfile({uid, avatar, name}) {
     return (
-      <Container style={styles.container}>
-        <Content>
-          <View style={styles.content}>
-            <Text>{this.state.uid}</Text>
-            {/* <Text>ProfileScreen</Text> */}
-            <LoginBlock />
-          </View>
-        </Content>
-      </Container>
+      <View style={styles.content}>
+        {avatar? (
+          <Thumbnail
+            large
+            source={{uri: avatar}}
+            style={styles.avatar}
+          />
+        ) : (
+          null
+        )}
+
+        <Text style={styles.name}>{name? name: '未設定'}</Text>
+
+        <LoginBlock />
+      </View>
     )
+  }
+
+  render () {
+    if(this.state.uid) {
+      return (
+        <Container style={styles.container}>
+          <Content>
+            {this.renderProfile({
+              uid: null,
+              name: null,
+              avatar: null,
+            })}
+          </Content>
+        </Container>
+      )
+    }
+    else {
+      return (
+        <Container style={styles.container}>
+          <Content>
+            {this.renderProfile({
+              uid: null,
+              name: null,
+              avatar: null,
+            })}
+          </Content>
+        </Container> 
+      )
+    }
   }
 }
 
@@ -55,6 +89,17 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  avatar: {
+    width: width*2/3,
+    height: width*2/3,
+    borderRadius: width/3,
+    margin: 20,
+  },
+  name: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    marginBottom: 20,
   },
 })
 
