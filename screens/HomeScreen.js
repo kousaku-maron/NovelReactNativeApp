@@ -1,13 +1,25 @@
 import React, { Component } from 'react'
-import { Query } from 'react-apollo'
-import { GET_NOVEL_ALL } from '../graphql/novel'
 import { StyleSheet } from 'react-native'
-import { Container, Content, View, Text } from 'native-base'
-import { AppLoading } from 'expo'
+import { Container, Content } from 'native-base'
 import Colors from '../constants/Colors'
 import NovelCard from '../components/NovelCard'
 
-import Test from '../components/LocalStateTest'
+const data = {
+  Novel: [
+    {
+      uuid: 'aa',
+      title: 'hello',
+      image: ['https://cdn.jalan.jp/jalan/img/4/kuchikomi/0574/KXL/7f321_0000574239_1.jpg'],
+      created_at: '2019-02-03 10:36:29',
+    },
+    {
+      uuid: 'bb',
+      title: 'world',
+      image: ['https://cdn.jalan.jp/jalan/img/4/kuchikomi/0574/KXL/7f321_0000574239_1.jpg'],
+      created_at: '2019-02-03 12:00:00',
+    }
+  ]
+}
 
 class HomeScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -20,44 +32,20 @@ class HomeScreen extends Component {
 
   render () {
     return (
-      <Query query={GET_NOVEL_ALL}>
-        {({ loading, error, data }) => {
-          if(loading) {
-            return <AppLoading />
-          }
-
-          if(error) {
-            console.log(error)
-
-            return (
-              <Container style={styles.container}>
-                <Content>
-                  <View style={styles.content}>
-                    <Text>HomeScreen Error</Text>
-                  </View>
-                </Content>
-              </Container> 
-            )
-          }
-
-          return (
-            <Container style={styles.container}>
-              <Content>
-                {data && data.Novel && data.Novel.map(element => (
-                  <NovelCard
-                    key={element.uuid}
-                    uuid={element.uuid}
-                    title={element.title}
-                    image={element.image[0]}
-                    created_at={element.created_at.formatted}
-                    navigation={this.props.navigation}
-                  />
-                ))}
-              </Content>
-            </Container>
-          )
-        }}
-      </Query>
+      <Container style={styles.container}>
+        <Content>
+          {data && data.Novel && data.Novel.map(element => (
+            <NovelCard
+              key={element.uuid}
+              uuid={element.uuid}
+              title={element.title}
+              image={element.image[0]}
+              created_at={element.created_at.formatted}
+              navigation={this.props.navigation}
+            />
+          ))}
+        </Content>
+      </Container>
     )
   }
 }

@@ -1,9 +1,7 @@
 import React from 'react'
-import { AsyncStorage } from 'react-native'
-import { ApolloProvider, Mutation } from 'react-apollo'
+import { AsyncStorage, View } from 'react-native'
 import { createAppContainer } from 'react-navigation'
 import AppNavigator from './navigation/AppNavigator'
-import client from './client'
 import { auth } from './modules/firebase'
 
 const AppContainer = createAppContainer(AppNavigator)
@@ -24,9 +22,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <ApolloProvider client={client}>
-        <AppContainer />
-      </ApolloProvider>
+      <AppContainer />
     )
   }
 }
