@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { StyleSheet, AsyncStorage, View, Text, Dimensions } from 'react-native'
 import { Container, Content, Thumbnail } from 'native-base'
-import Colors from '../constants/Colors'
-import LoginBlock from '../components/LoginBlock' 
+import Colors from '../../constants/Colors'
+import LoginBlock from '../other/LoginBlock' 
 
 class ProfileScreen extends Component {
   constructor(props) {

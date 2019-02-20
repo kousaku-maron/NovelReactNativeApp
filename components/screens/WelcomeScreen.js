@@ -1,8 +1,7 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import { StyleSheet, View, AsyncStorage } from 'react-native'
-import { Button, Text, Container, Content } from 'native-base'
-import Colors from '../constants/Colors'
+import { Button, Text } from 'native-base'
 import { DangerZone, AppLoading } from 'expo'
 let { Lottie } = DangerZone
 
@@ -53,7 +52,7 @@ class WelcomeScreen extends Component {
               this.animation = animation
             }}
             style={styles.lottie}
-            source={require('../animations/mappin.json')}
+            source={require('../../animations/mappin.json')}
           />
         </View>
         <View style={styles.buttonArea}>

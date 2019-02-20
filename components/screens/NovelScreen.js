@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Platform, StyleSheet, Dimensions, View, Text, Image } from 'react-native'
 import { Container, Content, Header, Left, Button, Thumbnail } from 'native-base'
 import { Icon } from 'expo'
-import Colors from '../constants/Colors'
+import Colors from '../../constants/Colors'
 
 const data = {
   Novel: [

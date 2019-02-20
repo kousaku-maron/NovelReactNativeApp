@@ -7,11 +7,11 @@ import {
 } from 'react-navigation'
 import { Icon } from 'expo'
 import Colors from '../constants/Colors'
-import WelcomeScreen from '../screens/WelcomeScreen'
-import HomeScreen from '../screens/HomeScreen'
-import WriteScreen from '../screens/WriteScreen'
-import NovelScreen from '../screens/NovelScreen'
-import ProfileScreen from '../screens/ProfileScreen'
+import WelcomeScreen from '../containers/WelcomeScreen'
+import HomeScreen from '../containers/HomeScreen'
+import WriteScreen from '../containers/WriteScreen'
+import NovelScreen from '../containers/NovelScreen'
+import ProfileScreen from '../containers/ProfileScreen'
 
 const HomeStack = createStackNavigator(
   {

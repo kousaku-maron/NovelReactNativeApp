@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { StyleSheet } from 'react-native'
 import { Container, Content } from 'native-base'
-import Colors from '../constants/Colors'
-import NovelCard from '../components/NovelCard'
+import Colors from '../../constants/Colors'
+import NovelCard from '../other/NovelCard'
 
 const data = {
   Novel: [

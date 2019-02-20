@@ -3,9 +3,9 @@ import { StyleSheet } from 'react-native'
 import { Dimensions, View } from 'react-native'
 import { Text, Button } from 'native-base'
 import { Icon } from 'expo'
-import { authFacebook, authGoogle, logout } from '../modules/firebase'
+import { authFacebook, authGoogle, logout } from '../../modules/firebase'
 
-const LoginBlock = (props) => (
+const LoginBlock = props => (
   <View style={styles.block}>
     <Button
       style={styles.facebookColor}

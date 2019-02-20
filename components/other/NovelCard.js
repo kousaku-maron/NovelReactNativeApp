@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { StyleSheet } from 'react-native'
 import { Dimensions, Image } from 'react-native'
-import { Card, CardItem, Body, Text, View } from 'native-base'
-import Colors from '../constants/Colors'
+import { Card, CardItem, Body, Text } from 'native-base'
+import Colors from '../../constants/Colors'
 
 const NovelCard = ({ uuid, title, image, created_at, navigation }) => (
   <Card style={styles.card}>
