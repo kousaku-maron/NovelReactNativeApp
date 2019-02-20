@@ -1,8 +1,12 @@
-import * as firebase from 'firebase'
+import * as firebase from 'firebase/app'
+import 'firebase/auth'
+import 'firebase/firestore'
 import { config, FACEBOOK_APPID, GOOGLE_CLIENTID } from './config'
 import * as Expo from 'expo'
 
 firebase.initializeApp(config)
+
+// auth
 
 export const auth = firebase.auth()
 
@@ -81,3 +85,9 @@ export const authFacebook = async () => {
 export const logout = () => {
   return firebase.auth().signOut()
 }
+
+// firestore
+
+export const db = firebase.firestore()
+export const userCollection = db.collection('user')
+export const novelCollection = db.collection('novel')

@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native'
 import { Dimensions, View } from 'react-native'
 import { Text, Button } from 'native-base'
 import { Icon } from 'expo'
-import { authFacebook, authGoogle, logout } from '../../modules/firebase'
+import { authFacebook, authGoogle } from '../../modules/firebase'
 
 const LoginBlock = props => (
   <View style={styles.block}>
@@ -33,14 +33,6 @@ const LoginBlock = props => (
       />
       <Text style={styles.whiteFontColor}>Login With Google</Text>
     </Button>
-    <Button
-      style={styles.logout}
-      transparent
-      dark
-      onPress={logout}
-    >
-      <Text style={styles.logoutText}>Logout</Text>
-    </Button>
   </View>
 )
 
@@ -53,20 +45,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: width/4 * 3,
     padding: 12,
-    height: 180,
+    height: 140,
   },
   facebookColor: {
     backgroundColor: '#3B5998',
   },
   googleColor: {
     backgroundColor: '#DB4437',
-  },
-  logout: {
-    marginLeft: 'auto',
-    marginRight: 'auto',
-  },
-  logoutText: {
-    fontSize: 12,
   },
   whiteFontColor: {
     color: 'white',

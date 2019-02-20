@@ -1,63 +1,49 @@
 import React, { Component } from 'react'
-import { StyleSheet, AsyncStorage, View, Text, Dimensions } from 'react-native'
-import { Container, Content, Thumbnail } from 'native-base'
+import { StyleSheet, View, Text, Dimensions } from 'react-native'
+import { Container, Content, Thumbnail, Button } from 'native-base'
 import Colors from '../../constants/Colors'
-import LoginBlock from '../other/LoginBlock' 
+import LoginBlock from '../other/LoginBlock'
+import { logout, userCollection } from '../../modules/firebase'
 
 class ProfileScreen extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      uid: null
-    }
-  }
-
   static navigationOptions = ({ navigation }) => ({
     title: 'Novel',
   })
 
-  async componentWillMount() {
-    let uid = await AsyncStorage.getItem('uid')
-
-    if(uid) {
-      this.setState({ uid })
+  componentWillMount() {
+    if(this.props.user.uid) {
+      userCollection.doc(this.props.user.uid).onSnapshot(doc => {
+        const properties = doc.data()
+        this.props.handleSetUserProperties(properties)
+      })
     }
-    else {
-      this.setState({ uid: null })
-    }
-  }
-
-  renderProfile({uid, avatar, name}) {
-    return (
-      <View style={styles.content}>
-        {avatar? (
-          <Thumbnail
-            large
-            source={{uri: avatar}}
-            style={styles.avatar}
-          />
-        ) : (
-          null
-        )}
-
-        <Text style={styles.name}>{name? name: '未設定'}</Text>
-
-        <LoginBlock />
-      </View>
-    )
   }
 
   render () {
-    if(this.state.uid) {
+    if(this.props.user.uid) {
+
+      const tempAvatar = 'https://firebasestorage.googleapis.com/v0/b/novels-a5884.appspot.com/o/temp%2Ftemp.png?alt=media&token=a4d36af6-f5e8-49ad-b9c0-8b5d4d899c0d'
+
       return (
         <Container style={styles.container}>
           <Content>
-            {this.renderProfile({
-              uid: null,
-              name: null,
-              avatar: null,
-            })}
+            <View style={styles.content}>
+              <Thumbnail
+                large
+                source={{uri: this.props.user.properties.avatar? this.props.user.properties.avatar : tempAvatar}}
+                style={styles.avatar}
+              />
+              {/* <Text>{this.props.user.uid}</Text> */}
+              <Text style={styles.name}>{this.props.user.properties.name? this.props.user.properties.name : '未設定'}</Text>
+              <Button
+                style={styles.logout}
+                transparent
+                dark
+                onPress={logout}
+              >
+                <Text style={styles.logoutText}>Logout</Text>
+              </Button>
+            </View>
           </Content>
         </Container>
       )
@@ -66,11 +52,9 @@ class ProfileScreen extends Component {
       return (
         <Container style={styles.container}>
           <Content>
-            {this.renderProfile({
-              uid: null,
-              name: null,
-              avatar: null,
-            })}
+            <View style={styles.content}>
+              <LoginBlock />
+            </View>
           </Content>
         </Container> 
       )
@@ -100,6 +84,13 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: 'bold',
     marginBottom: 20,
+  },
+  logout: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
+  logoutText: {
+    fontSize: 12,
   },
 })
 

@@ -3,7 +3,7 @@ import actions from '../actions/user'
 
 const initialState = { 
   uid: null,
-  token: null,
+  properties: {},
 }
 
 const reducer = handleActions({
@@ -11,6 +11,10 @@ const reducer = handleActions({
     ...state,
     uid: action.payload,
   }),
+  [actions.setUserProperties]: (state, action) => ({
+    ...state,
+    properties: action.payload,
+  })
 }, initialState)
 
 export default reducer
