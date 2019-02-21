@@ -4,15 +4,16 @@ import { Container, Content, Header, Left, Thumbnail, Button, Item, Input, Badge
 import { Icon, ImagePicker } from 'expo'
 import Colors from '../../constants/Colors'
 import LoginBlock from '../other/LoginBlock'
-import { userCollection, userRef } from '../../modules/firebase'
+import { userCollection, uploadAvatar } from '../../modules/firebase'
 import { acceptCameraRollPermissions } from '../../modules/permissions'
 
 class ProfileEditScreen extends Component {
   constructor(props) {
     super(props)
     this.state={
-        name: null,
-        avatar: null,
+      name: null,
+      avatar: null,
+      uploading: false,
     }
   }
 
@@ -73,40 +74,28 @@ class ProfileEditScreen extends Component {
   }
 
   updateProfile = async (properties) => {
-    const avatarRef = userRef.child(`${this.props.user.uid}/avatar1.png`)
+    try{
+      this.setState({ uploading: true })
 
-    let avatarUrl = null
-    if (this.state.avatar) {
-      const blob = await new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest()
-        xhr.onload = () => {
-          resolve(xhr.response)
-        }
+      let downloadUrl = null
+      if (this.state.avatar) {
+        downloadUrl = await uploadAvatar(this.state.avatar)
+      }
 
-        xhr.onerror = e => {
-          console.log(e)
-          reject(new TypeError('Network request failed'))
-        }
-
-        xhr.responseType = 'blob'
-        xhr.open('GET', this.state.avatar, true)
-        xhr.send(null)
+      await userCollection.doc(this.props.user.uid).set({
+        name: properties.name,
+        avatar: downloadUrl,
       })
 
-      await avatarRef.put(blob).then(async (snapshot) => {
-        await snapshot.ref.getDownloadURL().then(downloadURL => {
-          console.log('File available at', downloadURL)
-          avatarUrl = downloadURL
-        })
-      })
-
-      blob.close()
+      this.props.navigation.goBack()
     }
-
-    userCollection.doc(this.props.user.uid).set({
-      name: properties.name,
-      avatar: avatarUrl,
-    })
+    catch(e) {
+      console.log(e)
+      alert('Upload avatar image failed, sorry :(')
+    }
+    finally {
+      this.setState({ uploading: false })
+    }
   }
 
   render () {
@@ -171,6 +160,7 @@ class ProfileEditScreen extends Component {
                 dark
                 rounded
                 onPress={() => this.updateProfile(this.state)}
+                disabled={this.state.uploading}
               >
                 <Text style={styles.buttonText}>プロフィールを保存</Text>
               </Button>
