@@ -12,6 +12,7 @@ import HomeScreen from '../containers/HomeScreen'
 import WriteScreen from '../containers/WriteScreen'
 import NovelScreen from '../containers/NovelScreen'
 import ProfileScreen from '../containers/ProfileScreen'
+import ProfileEditScreen from '../containers/ProfileEditScreen'
 
 const HomeStack = createStackNavigator(
   {
@@ -90,6 +91,9 @@ const ProfileStack = createStackNavigator(
   {
     Profile: {
       screen: ProfileScreen
+    },
+    Edit: {
+      screen: ProfileEditScreen
     },
   },
   {

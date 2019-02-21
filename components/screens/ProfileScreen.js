@@ -12,11 +12,15 @@ class ProfileScreen extends Component {
 
   componentWillMount() {
     if(this.props.user.uid) {
-      userCollection.doc(this.props.user.uid).onSnapshot(doc => {
+      this.unsubscribe = userCollection.doc(this.props.user.uid).onSnapshot(doc => {
         const properties = doc.data()
         this.props.handleSetUserProperties(properties)
       })
     }
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe()
   }
 
   render () {
@@ -33,16 +37,25 @@ class ProfileScreen extends Component {
                 source={{uri: this.props.user.properties.avatar? this.props.user.properties.avatar : tempAvatar}}
                 style={styles.avatar}
               />
-              {/* <Text>{this.props.user.uid}</Text> */}
               <Text style={styles.name}>{this.props.user.properties.name? this.props.user.properties.name : '未設定'}</Text>
               <Button
-                style={styles.logout}
-                transparent
+                style={styles.button}
+                // transparent
                 dark
+                rounded
+                onPress={() => this.props.navigation.navigate('Edit')}
+              >
+                <Text style={styles.buttonText}>プロフィール編集</Text>
+              </Button>
+              {/* <Button
+                style={styles.button}
+                // transparent
+                dark
+                rounded
                 onPress={logout}
               >
-                <Text style={styles.logoutText}>Logout</Text>
-              </Button>
+                <Text style={styles.buttonText}>ログアウト</Text>
+              </Button> */}
             </View>
           </Content>
         </Container>
@@ -85,12 +98,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
   },
-  logout: {
+  button: {
+    padding: 10,
     marginLeft: 'auto',
     marginRight: 'auto',
   },
-  logoutText: {
+  buttonText: {
     fontSize: 12,
+    color: 'white',
   },
 })
 

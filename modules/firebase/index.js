@@ -1,6 +1,7 @@
 import * as firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firestore'
+import 'firebase/storage'
 import { config, FACEBOOK_APPID, GOOGLE_CLIENTID } from './config'
 import * as Expo from 'expo'
 
@@ -91,3 +92,8 @@ export const logout = () => {
 export const db = firebase.firestore()
 export const userCollection = db.collection('user')
 export const novelCollection = db.collection('novel')
+
+// storage
+
+const storageRef = firebase.storage().ref()
+export const userRef = storageRef.child('user')
