@@ -5,6 +5,7 @@ import { Icon, ImagePicker } from 'expo'
 import Colors from '../../constants/Colors'
 import { getNewNovelDoc, uploadNovelImage, getUid, getNowDate } from '../../modules/firebase'
 import { acceptCameraRollPermissions } from '../../modules/permissions'
+import LoginBlock from '../other/LoginBlock'
 
 const initialState = {
   title: null,
@@ -78,64 +79,77 @@ class WriteScreen extends Component {
   }
 
   render () {
-    return (
-      <Container style={styles.container}>
-        <Content>
-          <View style={styles.content}>
-            <View style={styles.imageSection}>
-              {this.state.image? (
-                <Thumbnail
-                  large
-                  square
-                  source={{ uri: this.state.image }}
-                  style={styles.image}
-                />
-              ) : null}
+    if(this.props.user.uid) {
+      return (
+        <Container style={styles.container}>
+          <Content>
+            <View style={styles.content}>
+              <View style={styles.imageSection}>
+                {this.state.image? (
+                  <Thumbnail
+                    large
+                    square
+                    source={{ uri: this.state.image }}
+                    style={styles.image}
+                  />
+                ) : null}
 
-              <Badge style={styles.iconButton}>
-                <Icon.AntDesign
-                  name='plus'
-                  size={50}
-                  color='white'
-                  onPress={this.pickImage}
+                <Badge style={styles.iconButton}>
+                  <Icon.AntDesign
+                    name='plus'
+                    size={50}
+                    color='white'
+                    onPress={this.pickImage}
+                  />
+                </Badge>
+              </View>
+              
+              <View style={styles.textSection}>
+                <Item style={styles.title} floatingLabel>
+                  <Label>タイトル</Label>
+                  <Input
+                    onChangeText={title => this.setState({ title })}
+                  />
+                </Item>
+
+                <Textarea
+                  style={styles.description}
+                  rowSpan={
+                    this.state.description?
+                    this.state.description.length < 100? 10: 15
+                    : 10
+                  }
+                  bordered
+                  placeholder='概要'
+                  onChangeText={body => this.setState({ body })}
                 />
-              </Badge>
+              </View>
+
+              <Button
+                style={styles.button}
+                dark
+                rounded
+                onPress={() => this.writeNovel(this.state)}
+                disabled={this.state.uploading}
+              >
+                <Text style={styles.buttonText}>ノベルを出版</Text>  
+              </Button>
             </View>
-            
-            <View style={styles.textSection}>
-              <Item style={styles.title} floatingLabel>
-                <Label>タイトル</Label>
-                <Input
-                  onChangeText={title => this.setState({ title })}
-                />
-              </Item>
-
-              <Textarea
-                style={styles.description}
-                rowSpan={
-                  this.state.description?
-                  this.state.description.length < 100? 10: 15
-                  : 10
-                }
-                bordered
-                placeholder='概要'
-                onChangeText={body => this.setState({ body })}
-              />
+          </Content>
+        </Container>
+      )
+    }
+    else {
+      return (
+        <Container style={styles.container}>
+          <Content>
+            <View style={styles.content}>
+              <LoginBlock />
             </View>
-
-            <Button
-              style={styles.button}
-              dark
-              rounded
-              onPress={() => this.writeNovel(this.state)}
-              disabled={this.state.uploading}
-            >
-              <Text style={styles.buttonText}>ノベルを出版</Text>  
-            </Button>
-          </View>
-        </Content>
-      </Container>
-    )
+          </Content>
+        </Container> 
+      )
+    }
   }
 }
 
