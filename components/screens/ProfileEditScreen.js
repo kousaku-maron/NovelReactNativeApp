@@ -140,7 +140,7 @@ class ProfileEditScreen extends Component {
                   style={styles.avatar}
                 />
               )}
-              
+
               <Badge style={styles.iconButton}>
                 <Icon.AntDesign
                   name='plus'
@@ -149,12 +149,14 @@ class ProfileEditScreen extends Component {
                   onPress={this.pickImage}
                 />
               </Badge>
+
               <Item style={styles.name} rounded>
-                  <Input
-                    placeholder={this.props.user.properties.name}
-                    onChangeText={name => this.setState({ name })}
-                  />
+                <Input
+                  placeholder={this.props.user.properties.name}
+                  onChangeText={name => this.setState({ name })}
+                />
               </Item>
+
               <Button
                 style={styles.button}
                 dark
@@ -204,16 +206,14 @@ const styles = StyleSheet.create({
   },
   iconButton: {
     position: 'absolute',
-    bottom: 140,
-    right: 60,
+    top: width*6/11,
+    right: width/7,
     width: 64,
     height: 64,
     borderRadius: 32,
   },
   name: {
     width: width*2/3,
-    marginLeft: 'auto',
-    marginRight: 'auto',
     marginBottom: 20,
   },
   button: {

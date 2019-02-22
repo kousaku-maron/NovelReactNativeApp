@@ -32,30 +32,34 @@ class ProfileScreen extends Component {
         <Container style={styles.container}>
           <Content>
             <View style={styles.content}>
-              <Thumbnail
-                large
-                source={{uri: this.props.user.properties.avatar? this.props.user.properties.avatar : tempAvatar}}
-                style={styles.avatar}
-              />
-              <Text style={styles.name}>{this.props.user.properties.name? this.props.user.properties.name : '未設定'}</Text>
-              <Button
-                style={styles.button}
-                // transparent
-                dark
-                rounded
-                onPress={() => this.props.navigation.navigate('Edit')}
-              >
-                <Text style={styles.buttonText}>プロフィール編集</Text>
-              </Button>
-              {/* <Button
-                style={styles.button}
-                // transparent
-                dark
-                rounded
-                onPress={logout}
-              >
-                <Text style={styles.buttonText}>ログアウト</Text>
-              </Button> */}
+              <View style={styles.profileSection}>
+                <View style={styles.profileMain}>
+                  <Thumbnail
+                    large
+                    source={{uri: this.props.user.properties.avatar? this.props.user.properties.avatar : tempAvatar}}
+                    style={styles.avatar}
+                  />
+                  <Text style={styles.name}>{this.props.user.properties.name? this.props.user.properties.name : '未設定'}</Text>
+                </View>
+                <Button
+                  style={styles.button}
+                  transparent
+                  dark
+                  // rounded
+                  onPress={() => this.props.navigation.navigate('Edit')}
+                >
+                  <Text style={styles.buttonText}>プロフィール編集</Text>
+                </Button>
+                {/* <Button
+                  style={styles.button}
+                  // transparent
+                  dark
+                  rounded
+                  onPress={logout}
+                >
+                  <Text style={styles.buttonText}>ログアウト</Text>
+                </Button> */}
+              </View>
             </View>
           </Content>
         </Container>
@@ -87,24 +91,36 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  profileSection: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+    width: width,
+    height: height/3,
+    padding: 10,
+    backgroundColor: Colors.palette.primary.main,
+  },
   avatar: {
-    width: width*2/3,
-    height: width*2/3,
-    borderRadius: width/3,
-    margin: 20,
+    width: height/5,
+    height: height/5,
+    borderRadius: height/10,
+    marginBottom: 15,
   },
   name: {
-    fontSize: 25,
+    fontSize: 12,
     fontWeight: 'bold',
-    marginBottom: 20,
+    color: Colors.palette.inherit,
+    textAlign: 'center',
   },
   button: {
+    position: 'absolute',
     padding: 10,
-    marginLeft: 'auto',
-    marginRight: 'auto',
+    bottom: 10,
+    right: 10,
   },
   buttonText: {
-    fontSize: 12,
+    fontSize: 10.5,
     color: 'white',
   },
 })
