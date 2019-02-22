@@ -57,6 +57,9 @@ const WriteStack = createStackNavigator(
     Write: {
       screen: WriteScreen
     },
+    Novel: {
+      screen: NovelScreen
+    },
   },
   {
     initialRouteName: "Write",

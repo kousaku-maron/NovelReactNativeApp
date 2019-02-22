@@ -93,14 +93,23 @@ export const db = firebase.firestore()
 export const userCollection = db.collection('user')
 export const novelCollection = db.collection('novel')
 
+export const getNowDate = () => {
+  return firebase.firestore.FieldValue.serverTimestamp()
+}
+
+export const getNewNovelDoc = () => {
+  return novelCollection.doc()
+} 
+
 // storage
 
 const storageRef = firebase.storage().ref()
 export const userRef = storageRef.child('user')
+export const novelRef = storageRef.child('novel')
 
 export const uploadAvatar = async(uri) => {
   const { uid } = getUid()
-  const avatarRef = userRef.child(`${uid}/avatar1.png`)
+  const avatarRef = userRef.child(`${uid}/avatar/avatar1.png`)
 
   const blob = await new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest()
@@ -119,6 +128,31 @@ export const uploadAvatar = async(uri) => {
   })
 
   const snapshot = await avatarRef.put(blob)
+  blob.close()
+  return await snapshot.ref.getDownloadURL()
+}
+
+export const uploadNovelImage = async(uri, uuid) => {
+  const { uid } = getUid()
+  const novelImageRef = userRef.child(`${uid}/novel/${uuid}/main.png`)
+
+  const blob = await new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest()
+    xhr.onload = () => {
+      resolve(xhr.response)
+    }
+
+    xhr.onerror = e => {
+      console.log(e)
+      reject(new TypeError('Network request failed'))
+    }
+
+    xhr.responseType = 'blob'
+    xhr.open('GET', uri, true)
+    xhr.send(null)
+  })
+
+  const snapshot = await novelImageRef.put(blob)
   blob.close()
   return await snapshot.ref.getDownloadURL()
 }
