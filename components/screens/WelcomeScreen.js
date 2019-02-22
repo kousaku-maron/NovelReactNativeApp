@@ -3,6 +3,8 @@ import React, { Component } from 'react'
 import { StyleSheet, View, AsyncStorage } from 'react-native'
 import { Button, Text } from 'native-base'
 import { DangerZone, AppLoading } from 'expo'
+import { logout } from '../../modules/firebase'
+
 let { Lottie } = DangerZone
 
 class WelcomeScreen extends Component {
@@ -58,6 +60,9 @@ class WelcomeScreen extends Component {
         <View style={styles.buttonArea}>
           <Button onPress={this.onStartButtonPress}>
             <Text>Go To App</Text>
+          </Button>
+          <Button onPress={logout}>
+            <Text>logout</Text>
           </Button>
         </View>
       </View>
