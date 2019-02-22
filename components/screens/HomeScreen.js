@@ -1,49 +1,63 @@
 import React, { Component } from 'react'
 import { StyleSheet } from 'react-native'
 import { Container, Content } from 'native-base'
+import moment from 'moment-timezone'
 import Colors from '../../constants/Colors'
 import NovelCard from '../other/NovelCard'
-
-const data = {
-  Novel: [
-    {
-      uuid: 'aa',
-      title: 'hello',
-      image: ['https://cdn.jalan.jp/jalan/img/4/kuchikomi/0574/KXL/7f321_0000574239_1.jpg'],
-      created_at: '2019-02-03 10:36:29',
-    },
-    {
-      uuid: 'bb',
-      title: 'world',
-      image: ['https://cdn.jalan.jp/jalan/img/4/kuchikomi/0574/KXL/7f321_0000574239_1.jpg'],
-      created_at: '2019-02-03 12:00:00',
-    }
-  ]
-}
+import { novelCollection } from '../../modules/firebase'
 
 class HomeScreen extends Component {
+  constructor(props) {
+    super(props)
+    this.state={
+      novel: null,
+    }
+  }
+
   static navigationOptions = ({ navigation }) => ({
     title: 'Novel',
   })
 
   componentWillMount () {
-    console.log('get home cards.')
+    this.unsubscribe = novelCollection.onSnapshot(querySnapshot => {
+      const novel = []
+      querySnapshot.forEach(doc => {
+        novel.push({ uuid: doc.id, ...doc.data() })
+      })
+      this.setState({ novel })
+    })
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe()
   }
 
   render () {
     return (
       <Container style={styles.container}>
         <Content>
-          {data && data.Novel && data.Novel.map(element => (
-            <NovelCard
-              key={element.uuid}
-              uuid={element.uuid}
-              title={element.title}
-              image={element.image[0]}
-              created_at={element.created_at.formatted}
-              navigation={this.props.navigation}
-            />
-          ))}
+          {this.state.novel && this.state.novel.map(element => {
+            let date
+            try {
+              console.log(element.created_at.seconds)
+              date = moment.unix(element.created_at.seconds).format('YYYY/MM/DD HH:mm:ss')
+            }
+            catch (e) {
+              console.log(e)
+              date = '投稿日不明'
+            }
+
+            return (
+              <NovelCard
+                key={element.uuid}
+                uuid={element.uuid}
+                title={element.title}
+                image={element.image}
+                created_at={date}
+                navigation={this.props.navigation}
+              />
+            )
+          })}
         </Content>
       </Container>
     )
