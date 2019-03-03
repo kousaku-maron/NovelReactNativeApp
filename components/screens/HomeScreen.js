@@ -19,11 +19,12 @@ class HomeScreen extends Component {
   })
 
   componentWillMount () {
-    this.unsubscribe = novelCollection.onSnapshot(querySnapshot => {
+    this.unsubscribe = novelCollection.orderBy('created_at').onSnapshot(querySnapshot => {
       const novel = []
       querySnapshot.forEach(doc => {
         novel.push({ uuid: doc.id, ...doc.data() })
       })
+      novel.reverse()
       this.setState({ novel })
     })
   }
